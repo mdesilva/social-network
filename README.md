@@ -6,8 +6,8 @@ Along the journey of building this app, I learned many things and absorbed much 
 
 This app(v1.0) currently features the ability to:
 
--sign in securely and store the user's session in a cookie
--request and cancel friend requests
+-sign in securely and store the user's session in a cookie \n
+-request and cancel friend requests \n
 -confirm friend requests and become friends with other users
 -create posts
 -like and comment on posts
