@@ -1,0 +1,6 @@
+<div ng-controller="friendsController">
+<h4> Friends </h4>
+<div class="panel" ng-repeat="friend in friends">
+  <a ui-sref="viewProfile({username:friend.username})"><h6>{{ friend.fullname || friend.username }}</h6></a>
+</div>
+</div>

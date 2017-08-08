@@ -1,0 +1,8 @@
+<h4> Search Results </h4>
+<p> {{ error }} </p> <!-- if there is an error, render it here !-->
+<p ng-if="results"> We found {{results.length}} results </p>
+<table>
+  <tr ng-repeat="result in results">
+    <td><a ui-sref="viewProfile({username: result.username})"> {{ result.fullname }} </a> </td>
+  </tr>
+</table>

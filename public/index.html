@@ -1,0 +1,89 @@
+<html ng-app="myApp">
+<head>
+<title> Social Network App </title>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<script src="public/controllers/router.js"></script>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="public/css/main.css">
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<!--ui router for angularjs !-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/1.0.3/angular-ui-router.js"> </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/danialfarid-angular-file-upload/12.2.13/ng-file-upload-all.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/danialfarid-angular-file-upload/12.2.13/ng-file-upload.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/danialfarid-angular-file-upload/12.2.13/ng-file-upload-shim.js"></script>
+<script src="public/controllers/signup-controller.js"></script>
+<script src="public/controllers/navigation-controller.js"></script>
+<script src="public/controllers/edit-profile-controller.js"></script>
+<script src="public/controllers/display-profile-controller.js"></script>
+<script src="public/controllers/search-view-controller.js"></script>
+<script src="public/controllers/view-other-profile-controller.js"></script>
+<script src="public/controllers/single-post-controller.js"></script>
+<script src="public/controllers/main-controller.js"></script>
+<script src="public/factories/posts.js"></script>
+<script src="public/factories/users.js"></script>
+<script src="public/controllers/post-controller.js"></script>
+<script src="public/controllers/submit-post-controller.js"></script>
+<script src="public/controllers/friends-controller.js"></script>
+<script src="public/controllers/friend-requests-controller.js"></script>
+<script src="public/controllers/user-controller.js"></script>
+</head>
+<body>
+<div class="container">
+<nav class="navbar navbar-default navbar-fixed-top" ng-controller="navigationController">
+<div class="container-fluid">
+
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#mainNav" aria-expanded="false">
+      <span class="sr-only"> Toggle Navigation </span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href="#"> Social </a>
+  </div>
+  <div class="collapse navbar-collapse" id="mainNav">
+    <ul class="nav navbar-nav navbar-right" ng-if="loggedIn">
+      <li><a ui-sref="main"> My Feed </a> </li>
+      <li><a ui-sref="myProfile"> My Profile </a><li>
+      <li><a ui-sref="editProfile"> Edit Profile </a> </li>
+      <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+        Notifications <span class="badge" ng-if="notifications"> {{ notificationsLength}} </span>
+        </a>
+        <ul class="dropdown-menu" ng-if="notifications">
+          <li ng-repeat="notification in notifications track by $index"> <a ui-sref="viewPost({postId: notification.link})" > {{ notification.content }} </a> </li>
+          <li> <button ng-click="archiveNotifications()">  Clear Notifications </button </li>
+        </ul>
+        <ul class="dropdown-menu" ng-if="!notifications">
+          <li> {{ noNotifications }} </li>
+        </ul>
+      </li>
+      <li><a ng-click="logOut()" ui-sref="main"> Log Out </a> </li>
+    </ul>
+  <ul class="nav navbar-nav navbar-right" ng-hide="loggedIn">
+    <li><input type="text" ng-model="login.username" class="form-control"></li>
+    <li><input type="password" ng-model="login.password" class="form-control"></li>
+    <li><button ng-click="loginUser()" class="btn btn-primary btn-sm"> Login </button></li>
+  </ul>
+  <ul class="nav navbar-nav navbar-left" ng-if="loggedIn">
+    <li><input type="text" ng-model="searchBox.query" class="form-control" ng-change="search()"> </li>
+    <li><button  class="btn btn-primary btn-sm"> Search </button></li>
+  </ul>
+</div>
+
+</div>
+</nav>
+<div class="row">
+<div class="col-md-12">
+<ui-view></ui-view>
+</div>
+</div>
+</body>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+</html>

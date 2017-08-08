@@ -1,0 +1,15 @@
+<div class="row">
+  <img src="public/uploads/cover.png" width=100% height=315 alt="Cover photo">
+</div>
+
+<div class="row">
+  <div class="col-md-3">
+  <div ng-include="'public/views/user/user.html'"></div> <!--User component !-->
+  <div ng-include="'public/views/user/friendRequests.html'"></div> <!-- friend requests component !-->
+  <div ng-include="'public/views/user/friends.html'"></div> <!-- confirmed friends !-->
+</div>
+  <div class="col-md-9 text-left">
+  </br>
+  <div ng-include="'public/views/submitPost.html'"></div> <!-- submit post component !-->
+  <div ng-include="'public/views/posts.html'"></div><!-- Posts component !-->
+  </div>

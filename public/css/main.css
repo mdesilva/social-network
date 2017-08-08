@@ -1,0 +1,21 @@
+/* base element */
+
+body {
+  margin-top: 70px;
+}
+
+.navbar-left {
+  left: 10;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.buttonLink {
+  text-decoration:none;
+  color:inherit;
+}
+
+.buttonLink:hover {
+  text-decoration: none;
+  color: inherit;
+}

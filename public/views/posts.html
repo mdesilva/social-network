@@ -1,0 +1,52 @@
+<div ng-controller="postController">
+  <div class="alert alert-info" ng-if="newPostsAlert"> {{ newPostsAlert }} <button ng-click="refreshState()"> Click to Refresh </button> </div>
+  <div class="panel panel-default" ng-repeat="post in posts track by $index">
+
+    <div class="panel-body">
+    <div class="media">
+      <div class="media-left media-middle">
+        <img src="public/uploads/placeholder.jpg" width=64 height=64>
+      </div>
+      <div class="media-body">
+        <div class="row media-heading">
+          <div class="col-md-9">
+            <a ui-sref="viewProfile({username: post.username})"> {{ post.username }}</a>
+          </div>
+          <div class="col-md-3">
+            <h6> {{ post.date | date: short }} </h6>
+          </div>
+        </div>
+        <p> {{ post.content }} </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel-footer">
+
+    <button ng-click="likePost(post._id,$index)" ng-hide="post.userLiked"> Like </button>
+    <button ng-click="unlikePost(post._id,$index)" ng-show="post.userLiked"> Unlike </button>
+    <p ng-if="post.likes"> {{ post.likes }} Likes </p>
+
+    <div class="row" ng-repeat="comments in post.comments">
+      <h4> {{ comments.username }} </h4>
+      <p> {{ comments.comment }} </p>
+    </div>
+
+    <div class="row" ng-if="post.newComment">
+    <h4> {{ request.currentUser }}</h4>
+    <p> {{ $parent.comment }}<p>
+    </div>
+
+    <button ng-click="clickToComment($index)" ng-hide="post.commentEditor"> Comment </button>
+
+    <div ng-show="post.commentEditor">
+    <textarea ng-model="$parent.comment"></textarea>
+    <button ng-click="submitComment(post._id,$index)"> Submit </button>
+    <button ng-click="cancelComment($index)"> Cancel </button>
+
+    </div>
+  </div>
+
+</div>
+
+</div>

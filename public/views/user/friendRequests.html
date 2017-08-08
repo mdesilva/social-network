@@ -1,0 +1,9 @@
+<div ng-controller="friendRequestsController">
+<p ng-if="noFriendRequests"> {{ noFriendRequests }} </p>
+<div ng-if="friendRequests">
+<h6> Friend Requests </h6>
+<div class="panel" ng-repeat="friend in friendRequests">
+  <h6> {{ friend.username }} </h6>
+  <button ng-click="confirmFriend(friend.username)"> Confirm </button>
+</div>
+</div>
