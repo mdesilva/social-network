@@ -25,20 +25,20 @@ var myApp = angular.module('myApp', ['ui.router', 'ngFileUpload']).config(functi
   .state('signUp', {
     url: "/signup",
     templateUrl: "public/views/signup.html",
-    controller: "signUpController"
+    controller: "authController"
   })
-  .state('editProfile', {
-    url: "/edit-profile",
-    templateUrl: "public/views/edit-profile-view.html",
-    controller: "editProfileController",
-    resolve: {
-      checkLoggedIn: isLoggedIn
+  .state('login', {
+    url: "/login",
+    templateUrl: "public/views/login.html",
+    controller: "authController",
+    params: {
+      loginFailed: null,
+      message: null
     }
   })
   .state('myProfile', {
     url: '/my-profile',
     templateUrl: "public/views/display-profile-view.html",
-    controller: "displayProfileController",
     resolve: {
       checkLoggedIn: isLoggedIn
     }
@@ -46,7 +46,6 @@ var myApp = angular.module('myApp', ['ui.router', 'ngFileUpload']).config(functi
   .state('main', {
     url: '/main',
     templateUrl: "public/views/main-view.html",
-    controller: "mainController",
     resolve: {
       checkLoggedIn: isLoggedIn
     }
@@ -59,11 +58,6 @@ var myApp = angular.module('myApp', ['ui.router', 'ngFileUpload']).config(functi
     },
     controller: "searchController"
   })
-  /*.state('viewProfile', {
-    url: "/viewProfile/:id", //declare dynamic parameter in the url itself
-    templateUrl: "public/profile/view-other-profile-view.html",
-    controller: "viewOtherProfile"
-  }) */
   .state('viewProfile', {
     url: "/viewProfile/:username",
     templateUrl: "public/views/view-other-profile-view.html",
@@ -72,7 +66,6 @@ var myApp = angular.module('myApp', ['ui.router', 'ngFileUpload']).config(functi
   .state('viewPost', {
     url: "/posts/:postId",
     templateUrl: "public/views/view-single-post.html",
-    controller: "singlePostController",
     resolve: {
       checkLoggedIn: isLoggedIn
     }

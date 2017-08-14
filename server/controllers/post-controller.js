@@ -85,7 +85,6 @@ module.exports.getPost = function(req,res){
     }
     else{
       getWhoLiked(docs, currentUser);
-      console.log(docs[0]);
       res.json(docs);
     }
   })

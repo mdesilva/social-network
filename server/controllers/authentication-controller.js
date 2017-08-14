@@ -46,17 +46,17 @@ function(req,username,password,done){
       return done(err)
     }
     if(!user){
-      console.log("User not found");
+      //console.log("User not found");
       return done(null,false)
     }
     if(user){
       bcrypt.compare(password, user.password, function(err,res){
         if(res){
-          console.log("User authenticated!")
+          //console.log("User authenticated!")
           return done(null,user)
         }
         else{
-          console.log("Wrong password");
+          //console.log("Wrong password");
           return done(null,false);
         }
       })

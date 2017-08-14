@@ -19,3 +19,7 @@ body {
   text-decoration: none;
   color: inherit;
 }
+
+.postContent {
+  font-size: 16px;
+}

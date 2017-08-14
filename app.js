@@ -25,6 +25,8 @@ app.use('/public', express.static('public'));
 //app.use(session({secret: 'socialnetwork', cookie: {expires: false}})); //store the user session in a cookie
 app.use(session({ //store the user session in mongo database DEVELOPMENT ONLY
   secret: 'socialnetwork',
+  resave: false,
+  saveUninitialized: true,
   maxAge: new Date(Date.now() + 3600000),
   store: new MongoStore(
     {mongooseConnection:db}

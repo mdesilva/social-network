@@ -77,6 +77,7 @@ module.exports.getUserInfo = function(req, res){
 
 module.exports.getFriendRequests = function(req,res){
   var username = req.body.username;
+
   User.find({username: username}, {"friendRequests": true, _id:false}, function(err,docs){
     if(err){
       console.log(err);

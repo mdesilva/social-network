@@ -14,16 +14,13 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/danialfarid-angular-file-upload/12.2.13/ng-file-upload-all.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/danialfarid-angular-file-upload/12.2.13/ng-file-upload.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/danialfarid-angular-file-upload/12.2.13/ng-file-upload-shim.js"></script>
-<script src="public/controllers/signup-controller.js"></script>
+<script src="public/controllers/auth-controller.js"></script>
 <script src="public/controllers/navigation-controller.js"></script>
-<script src="public/controllers/edit-profile-controller.js"></script>
-<script src="public/controllers/display-profile-controller.js"></script>
 <script src="public/controllers/search-view-controller.js"></script>
 <script src="public/controllers/view-other-profile-controller.js"></script>
-<script src="public/controllers/single-post-controller.js"></script>
-<script src="public/controllers/main-controller.js"></script>
 <script src="public/factories/posts.js"></script>
 <script src="public/factories/users.js"></script>
+<script src="public/factories/auth.js"></script>
 <script src="public/controllers/post-controller.js"></script>
 <script src="public/controllers/submit-post-controller.js"></script>
 <script src="public/controllers/friends-controller.js"></script>
@@ -44,12 +41,15 @@
     </button>
     <a class="navbar-brand" href="#"> Social </a>
   </div>
+
+
   <div class="collapse navbar-collapse" id="mainNav">
     <ul class="nav navbar-nav navbar-right" ng-if="loggedIn">
       <li><a ui-sref="main"> My Feed </a> </li>
       <li><a ui-sref="myProfile"> My Profile </a><li>
-      <li><a ui-sref="editProfile"> Edit Profile </a> </li>
-      <li class="dropdown">
+
+
+      <li class="dropdown"> <!--Notifications !-->
         <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
         Notifications <span class="badge" ng-if="notifications"> {{ notificationsLength}} </span>
         </a>
@@ -58,16 +58,26 @@
           <li> <button ng-click="archiveNotifications()">  Clear Notifications </button </li>
         </ul>
         <ul class="dropdown-menu" ng-if="!notifications">
-          <li> {{ noNotifications }} </li>
+          <li bind="noNotifications"></li>
         </ul>
       </li>
       <li><a ng-click="logOut()" ui-sref="main"> Log Out </a> </li>
     </ul>
-  <ul class="nav navbar-nav navbar-right" ng-hide="loggedIn">
-    <li><input type="text" ng-model="login.username" class="form-control"></li>
-    <li><input type="password" ng-model="login.password" class="form-control"></li>
-    <li><button ng-click="loginUser()" class="btn btn-primary btn-sm"> Login </button></li>
-  </ul>
+
+
+  <form class="navbar-form navbar-right" ng-hide="loggedIn"> <!--Login Form !-->
+    <div class="form-group">
+      <input type="text" ng-model="login.username" class="form-control" id="username" placeholder="Username:">
+    </div>
+    <div class="form-group">
+      <input type="password" ng-model="login.password" class="form-control" id="password" placeholder="Password:">
+    </div>
+    <div class="form-group">
+      <button type="submit" ng-click="loginUser()" class="btn btn-primary btn-sm"> Login </button>
+    </div>
+  </form>
+
+
   <ul class="nav navbar-nav navbar-left" ng-if="loggedIn">
     <li><input type="text" ng-model="searchBox.query" class="form-control" ng-change="search()"> </li>
     <li><button  class="btn btn-primary btn-sm"> Search </button></li>

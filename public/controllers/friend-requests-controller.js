@@ -1,5 +1,10 @@
-angular.module('myApp').controller('friendRequestsController', ['$state','$scope', 'users', function($state, $scope, users){
-  users.getFriendRequests($scope.request).then(function(response){
+angular.module('myApp').controller('friendRequestsController', ['$rootScope', '$state', '$stateParams','$scope', 'users', function($rootScope, $state,$stateParams, $scope, users){
+  var request = {
+    username: $rootScope.user.username
+  }
+
+
+  users.getFriendRequests(request).then(function(response){
     if(response.friendRequests){
       $scope.friendRequests = response.friendRequests;
     }
@@ -9,12 +14,12 @@ angular.module('myApp').controller('friendRequestsController', ['$state','$scope
   })
 
   $scope.confirmFriend = function(friendConfirming){
-    $scope.friendRequest = {
-      userOneUserName: $scope.request.currentUser,
+    var friendRequest = {
+      userOneUserName: request.username,
       userTwoUserName: friendConfirming,
     }
 
-    users.confirmFriend($scope.friendRequest).then(function(response){
+    users.confirmFriend(friendRequest).then(function(response){
       $state.reload();
     })
   }

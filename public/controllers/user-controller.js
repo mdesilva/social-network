@@ -1,6 +1,16 @@
-angular.module('myApp').controller('userController', ['$scope','users','$state', function($scope,users,$state){
+angular.module('myApp').controller('userController', ['$scope','users','$state','$stateParams','$rootScope', function($scope,users,$state,$stateParams,$rootScope){
 
-  users.getUserInfo($scope.request).then(function(response){
+  var request = {
+    username: $rootScope.user.username
+  }
+
+  if($state.current.name === "viewProfile"){
+    var request = {
+      username: $stateParams.username
+    }
+  }
+
+  users.getUserInfo(request).then(function(response){
     $scope.fullname = response.fullname;
   })
 

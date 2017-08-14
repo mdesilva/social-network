@@ -1,12 +1,12 @@
-angular.module('myApp').controller('navigationController', ['$scope', '$http', '$state','$rootScope','$interval', function($scope, $http, $state,$rootScope,$interval){
+angular.module('myApp').controller('navigationController', ['$scope', '$http', '$state','$rootScope','$interval','auth', function($scope, $http, $state,$rootScope,$interval,auth){
   $scope.searchBox = {}; //initialize search
-  $scope.notifications;
-  $scope.notificationsLength;
   $scope.request = {
     currentUser: null
   };
 
-  $scope.getNotifications = function(){
+  var refreshNotifications;
+
+  var getNotifications = function(){
     $http.post("/api/profile/getNotifications", $scope.request).then(function(response){
       if(response.data.notifications){
         $scope.notifications = response.data.notifications;
@@ -19,39 +19,38 @@ angular.module('myApp').controller('navigationController', ['$scope', '$http', '
     })
   }
 
-  $http.get("/api/user/isloggedin").then(function(response){
+  var refreshNav = function(){
+    $http.get("/api/user/isloggedin").then(function(response){
     if(response.data.status === true){
+      $state.go('main');
       $scope.loggedIn = true;
       $scope.request.currentUser = response.data.user.username;
-      $scope.getNotifications(); //get the user's notifications immediately after verifying they are logged in
-      $interval($scope.getNotifications, 5000) //then refresh the notifcations every 5 seconds
+      getNotifications(); //get the user's notifications immediately after verifying they are logged in
+      refreshNotifications = $interval(getNotifications, 5000); //then refresh the notifcations every 5 seconds
     }
     else{
-      $scope.loggedIn = false;
-      $scope.currentUser = null;
+      $state.go('login',{loginFailed:true, message:"Your session has expired. Please sign in again."});
     }
   })
+}
+
+  refreshNav();
+
+  $scope.$on('logged_in', refreshNav); //when the logged in message is recieved via rootScope, run the function
 
   $scope.loginUser = function() {
-    $http.post("api/user/login", $scope.login).then(function(response){
-      $scope.logInStatus = "";
-      $scope.loggedIn = true;
-      $state.go('main');
-    })
+    auth.login($scope.login);
+    $scope.login = {}; //clear the login form
   }
 
   $scope.logOut = function() {
-    $http.get("/logout").then(function(response){
-      $state.go('home');
-      $scope.logInStatus = "Successfully logged out";
-      $scope.loggedIn = false;
-    })
-
+    $interval.cancel(refreshNotifications); //stop refreshing the notifications, as the user has signed out
+    refreshNotifications = undefined;
+    $scope.loggedIn = false;
+    auth.logout();
   }
 
-
   $scope.archiveNotifications = function() {
-    console.log($scope.request);
     var request = {
       currentUser: $scope.request.currentUser,
       notifications: $scope.notifications

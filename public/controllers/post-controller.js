@@ -1,45 +1,55 @@
 angular.module('myApp').controller('postController', ['$rootScope','$scope','posts','$state','$interval', '$stateParams', function($rootScope,$scope,posts,$state,$interval, $stateParams){
-
-  //when commenting, liking, or unliking a post, we wil send a request to update the data on the server side, but we will simulate the
-  //updated data here on the client side so we don't have to reload the entire state to reflect the changes.
-  //When the state or page is refreshed again , it will get the latest data directly from the server, including our changes.
-
-  var state = $state.current.name;
   $scope.posts = []; //initialize the posts, which will be stored in an array after retrieving them from the database
 
-  var refreshAllPosts = function(){
-    posts.getAllPosts($scope.request).then(function(response){
-      if(response.length > $scope.posts.length){
-        $scope.newPostsAlert = "There are " + (response.length - $scope.posts.length) + " new posts.";
-      }
-    })
-  }
+  var state = $state.current.name;
+  var refreshPosts;
+  var currentUser;
+
+  $scope.request = {
+    username: $rootScope.user.username,
+    currentUser: $rootScope.user.username,
+  };
 
   var getAllPosts = function(){
-    return posts.getAllPosts($scope.request).then(function(response){
+    posts.getAllPosts($scope.request).then(function(response){
       $scope.posts = response;
     });
   }
 
-  if(state === "main"){
+  if(state === "main"){ //feed, get all posts of the users that the user follows
     getAllPosts();
-    $interval(refreshAllPosts, 5000);
+    refreshPosts = $interval(getAllPosts, 5000);
   }
-  if(state === "viewPost"){
+  if(state === "viewPost"){ //get one single post
     var requestToGetSinglePost = {
-      currentUser: $scope.currentUser,
+      currentUser: $rootScope.user.username,
       postId: $stateParams.postId
     }
     posts.getSinglePost(requestToGetSinglePost).then(function(response){
       $scope.posts = response;
     })
   }
-  else{
+  if(state === "viewProfile"){
+    $scope.request = {
+      username: $scope.userTwo, //we want to get the details and posts of the user profile that is being viewed
+      currentUser: $scope.userOne //if we are commenting on a post, we are commenting as the user that is logged in
+    }
+    posts.getUserPosts($scope.request).then(function(response){
+      $scope.posts = response;
+    })
+  }
+  else{ //get just the users posts
     posts.getUserPosts($scope.request).then(function(response){
       $scope.posts = response;
     })
   }
 
+  var stopPostsRefresh = function(){
+    $interval.cancel(refreshPosts);
+    refreshPosts = undefined;
+  }
+
+  $scope.$on('stop_posts_refresh', stopPostsRefresh);
 
   $scope.clickToComment = function(index){
     $scope.posts[index].commentEditor = true;

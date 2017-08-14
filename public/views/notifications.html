@@ -1,0 +1,10 @@
+<a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+Notifications <span class="badge" ng-if="notifications"> {{ notificationsLength}} </span>
+</a>
+<ul class="dropdown-menu" ng-if="notifications">
+  <li ng-repeat="notification in notifications track by $index"> <a ui-sref="viewPost({postId: notification.link})" > {{ notification.content }} </a> </li>
+  <li> <button ng-click="archiveNotifications()">  Clear Notifications </button </li>
+</ul>
+<ul class="dropdown-menu" ng-if="!notifications">
+  <li> {{ noNotifications }} </li>
+</ul>

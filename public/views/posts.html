@@ -4,11 +4,13 @@
 
     <div class="panel-body">
     <div class="media">
+
       <div class="media-left media-middle">
         <img src="public/uploads/placeholder.jpg" width=64 height=64>
       </div>
       <div class="media-body">
-        <div class="row media-heading">
+        <div class="media-heading">
+          <div class="row">
           <div class="col-md-9">
             <a ui-sref="viewProfile({username: post.username})"> {{ post.username }}</a>
           </div>
@@ -16,28 +18,50 @@
             <h6> {{ post.date | date: short }} </h6>
           </div>
         </div>
-        <p> {{ post.content }} </p>
+        </div>
+        <p class="postContent" ng-bind=post.content></p>
+        <p ng-if="post.likes===0"> Be the first to like this post ! </p>
+        <p ng-if="post.likes"> {{ post.likes }} Likes </p>
       </div>
     </div>
+
+  <div class="row">
+  <div class="col-md-9">
+  <button ng-click="likePost(post._id,$index)" ng-hide="post.userLiked" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-heart-empty" aria-hidden=true></span> Like  </button>
+  <button ng-click="unlikePost(post._id,$index)" ng-show="post.userLiked" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-heart" aria-hidden=true></span> Unlike </button>
+  <button ng-click="clickToComment($index)" ng-hide="post.commentEditor" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-comment" aria-hidden=true></span> Comment </button>
   </div>
-
+</div>
+  </div>
   <div class="panel-footer">
-
-    <button ng-click="likePost(post._id,$index)" ng-hide="post.userLiked"> Like </button>
-    <button ng-click="unlikePost(post._id,$index)" ng-show="post.userLiked"> Unlike </button>
-    <p ng-if="post.likes"> {{ post.likes }} Likes </p>
-
-    <div class="row" ng-repeat="comments in post.comments">
-      <h4> {{ comments.username }} </h4>
-      <p> {{ comments.comment }} </p>
+    <div class="row" ng-repeat="comment in post.comments | limitTo:2">
+      <div class="media">
+        <div class="media-left media-top">
+          <a ui-sref="viewProfile({username:comment.username})">
+            <img src="public/uploads/placeholder.jpg" width=32 height=32>
+          </a>
+        </div>
+        <div class="media-body">
+          <div class="row media-heading">
+            <div class="col-md-9">
+            <a ui-sref="viewProfile({username:comment.username})" ng-bind="comment.username"> </a>
+            </div>
+            <!--
+            <div class="col-md-3">
+              <h6> {{ comment.date | date: short }}</h6>
+            </div> !-->
+          </div>
+          <p ng-bind="comment.comment"></p>
+        </div>
     </div>
+  </div>
 
     <div class="row" ng-if="post.newComment">
     <h4> {{ request.currentUser }}</h4>
     <p> {{ $parent.comment }}<p>
     </div>
 
-    <button ng-click="clickToComment($index)" ng-hide="post.commentEditor"> Comment </button>
+
 
     <div ng-show="post.commentEditor">
     <textarea ng-model="$parent.comment"></textarea>
